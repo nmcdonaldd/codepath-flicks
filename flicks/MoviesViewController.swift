@@ -74,9 +74,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func showHUD() {
-        SVProgressHUD.setDefaultStyle(.dark)
+        SVProgressHUD.setDefaultStyle(.light)
         SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.setDefaultAnimationType(.native)
         SVProgressHUD.show()
     }
     
