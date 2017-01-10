@@ -26,6 +26,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.loadMoviesData()
         
         self.refreshControl = UIRefreshControl()
+        self.refreshControl.backgroundColor = UIColor.clear
         self.refreshControl.addTarget(self, action: #selector(self.refreshControlTriggered), for: .valueChanged)
         self.moviesTableView.insertSubview(self.refreshControl, at: 0)
     }
@@ -97,13 +98,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let movie = self.movies![indexPath.row]
         let title = movie["title"] as! String
-        let overview = movie["overview"] as! String
-        let posterPath = movie["poster_path"] as! String
+        let posterPath = movie["backdrop_path"] as! String
         let imageURL = NSURL(string: baseURL + posterPath)
+        let releaseDate = movie["release_date"] as! String
+        let rating = movie["vote_average"] as! Float
         
         cell?.title.text = title
-        cell?.overview.text = overview
         cell?.moviePosterImageView.setImageWith(imageURL as! URL)
+        cell?.releaseDateLabel.text = releaseDate
+        cell?.ratingLabel.text = String(rating)
         
         return cell!
         
