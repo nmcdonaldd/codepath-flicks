@@ -32,8 +32,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func refreshControlTriggered() {
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
+        let url = URL(string: moviesDBNowPlayingEndpoint + moviesDBAPIKey)!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         
@@ -42,7 +41,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     print(dataDictionary)
                     
-                    self.movies = dataDictionary["results"] as? [NSDictionary]
+                    self.movies = dataDictionary[moviesResultsPropertyIdentifier] as? [NSDictionary]
                     self.moviesTableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
@@ -53,8 +52,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 
     
     private func loadMoviesData() {
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
+        let url = URL(string: moviesDBNowPlayingEndpoint + moviesDBAPIKey)!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         
@@ -64,8 +62,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     print(dataDictionary)
                     
-                    self.movies = dataDictionary["results"] as? [NSDictionary]
+                    self.movies = dataDictionary[moviesResultsPropertyIdentifier] as? [NSDictionary]
                     self.moviesTableView.reloadData()
+                    self.refreshControl.endRefreshing()
                 }
             }
             self.hideHUD()
@@ -74,7 +73,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func showHUD() {
-        SVProgressHUD.setDefaultStyle(.light)
+        SVProgressHUD.setDefaultStyle(.dark)
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show()
     }
@@ -101,16 +100,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let baseURL = "https://image.tmdb.org/t/p/w500"
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as? MoviesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: moviesCellReusableIdentifier) as? MoviesTableViewCell
         
         let movie = self.movies![indexPath.row]
-        let title = movie["title"] as! String
-        let posterPath = movie["backdrop_path"] as! String
-        let imageURL = NSURL(string: baseURL + posterPath)
-        let releaseDate = movie["release_date"] as! String
-        let rating = movie["vote_average"] as! Float
+        let title = movie[moviesTitlePropertyIdentifier] as! String
+        let posterPath = movie[moviesBackdropPathPropertyIdentifier] as! String
+        let imageURL = NSURL(string: moviesDBBaseImagePath + posterPath)
+        let releaseDate = movie[moviesReleaseDatePropertyIdentifier] as! String
+        let rating = movie[moviesVoteAveragePropertyIdentifier] as! Float
         
         cell?.title.text = title
         cell?.moviePosterImageView.setImageWith(imageURL as! URL)
@@ -120,15 +117,4 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         return cell!
         
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

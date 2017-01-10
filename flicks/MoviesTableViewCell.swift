@@ -23,7 +23,7 @@ class MoviesTableViewCell: UITableViewCell {
         gradient.frame = self.moviePosterImageView.bounds
         let blackColor: CGColor = UIColor(colorLiteralRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.70).cgColor
         gradient.colors = [UIColor.clear.cgColor, blackColor]
-        gradient.locations = [0.5, 1.0]
+        gradient.locations = [0.65, 1.0]
         self.moviePosterImageView.layer.insertSublayer(gradient, at: 0)
     }
 
