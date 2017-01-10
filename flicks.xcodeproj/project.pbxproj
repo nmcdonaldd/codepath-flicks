@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		804C9DFC89CD5C5790FF2E5D /* Pods_flicks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF79E8F135D83288A692D361 /* Pods_flicks.framework */; };
+		D529A6B81E258353007312DE /* KeyDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529A6B71E258353007312DE /* KeyDefinitions.swift */; };
 		D52A04E21E247001002B7970 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52A04E11E247001002B7970 /* AppDelegate.swift */; };
 		D52A04E71E247001002B7970 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D52A04E51E247001002B7970 /* Main.storyboard */; };
 		D52A04E91E247001002B7970 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D52A04E81E247001002B7970 /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		9AFE3A94485788E30E91A33C /* Pods-flicks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flicks.release.xcconfig"; path = "Pods/Target Support Files/Pods-flicks/Pods-flicks.release.xcconfig"; sourceTree = "<group>"; };
+		D529A6B71E258353007312DE /* KeyDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyDefinitions.swift; sourceTree = "<group>"; };
 		D52A04DE1E247001002B7970 /* flicks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flicks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D52A04E11E247001002B7970 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D52A04E61E247001002B7970 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				D52A04E11E247001002B7970 /* AppDelegate.swift */,
+				D529A6B71E258353007312DE /* KeyDefinitions.swift */,
 				D52A04F81E247768002B7970 /* ViewControllers */,
 				D52A04F51E24773E002B7970 /* Views */,
 				D52A04E51E247001002B7970 /* Main.storyboard */,
@@ -231,6 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D529A6B81E258353007312DE /* KeyDefinitions.swift in Sources */,
 				D52A04F71E24775D002B7970 /* MoviesTableViewCell.swift in Sources */,
 				D52A04E21E247001002B7970 /* AppDelegate.swift in Sources */,
 				D52A04F41E247048002B7970 /* MoviesViewController.swift in Sources */,
@@ -397,6 +401,7 @@
 				D52A04F21E247001002B7970 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

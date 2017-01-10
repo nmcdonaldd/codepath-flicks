@@ -8,7 +8,7 @@
 
 import UIKit
 import AFNetworking
-import MBProgressHUD
+import SVProgressHUD
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -26,13 +26,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.loadMoviesData()
         
         self.refreshControl = UIRefreshControl()
+        self.refreshControl.backgroundColor = UIColor.clear
         self.refreshControl.addTarget(self, action: #selector(self.refreshControlTriggered), for: .valueChanged)
         self.moviesTableView.insertSubview(self.refreshControl, at: 0)
     }
     
     func refreshControlTriggered() {
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
+        let url = URL(string: moviesDBNowPlayingEndpoint + moviesDBAPIKey)!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         
@@ -41,7 +41,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     print(dataDictionary)
                     
-                    self.movies = dataDictionary["results"] as! [NSDictionary]
+                    self.movies = dataDictionary[moviesResultsPropertyIdentifier] as? [NSDictionary]
                     self.moviesTableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
@@ -52,25 +52,34 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 
     
     private func loadMoviesData() {
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
+        let url = URL(string: moviesDBNowPlayingEndpoint + moviesDBAPIKey)!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        
+        self.showHUD()
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     print(dataDictionary)
                     
-                    self.movies = dataDictionary["results"] as! [NSDictionary]
+                    self.movies = dataDictionary[moviesResultsPropertyIdentifier] as? [NSDictionary]
                     self.moviesTableView.reloadData()
+                    self.refreshControl.endRefreshing()
                 }
             }
-            MBProgressHUD.hide(for: self.view, animated: true)
+            self.hideHUD()
         }
         task.resume()
+    }
+    
+    func showHUD() {
+        SVProgressHUD.setDefaultStyle(.dark)
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show()
+    }
+    
+    func hideHUD() {
+        SVProgressHUD.dismiss()
     }
 
     override func didReceiveMemoryWarning() {
@@ -91,32 +100,21 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let baseURL = "https://image.tmdb.org/t/p/w500"
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as? MoviesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: moviesCellReusableIdentifier) as? MoviesTableViewCell
         
         let movie = self.movies![indexPath.row]
-        let title = movie["title"] as! String
-        let overview = movie["overview"] as! String
-        let posterPath = movie["poster_path"] as! String
-        let imageURL = NSURL(string: baseURL + posterPath)
+        let title = movie[moviesTitlePropertyIdentifier] as! String
+        let posterPath = movie[moviesBackdropPathPropertyIdentifier] as! String
+        let imageURL = NSURL(string: moviesDBBaseImagePath + posterPath)
+        let releaseDate = movie[moviesReleaseDatePropertyIdentifier] as! String
+        let rating = movie[moviesVoteAveragePropertyIdentifier] as! Float
         
         cell?.title.text = title
-        cell?.overview.text = overview
         cell?.moviePosterImageView.setImageWith(imageURL as! URL)
+        cell?.releaseDateLabel.text = releaseDate
+        cell?.ratingLabel.text = String(rating)
         
         return cell!
         
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

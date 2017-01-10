@@ -11,12 +11,20 @@ import UIKit
 class MoviesTableViewCell: UITableViewCell {
 
     @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var overview: UILabel!
     @IBOutlet weak var moviePosterImageView: UIImageView!
+    @IBOutlet weak var ratingLabel: UILabel!
+    @IBOutlet weak var releaseDateLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        let gradient = CAGradientLayer()
+        gradient.frame = self.moviePosterImageView.bounds
+        let blackColor: CGColor = UIColor(colorLiteralRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.70).cgColor
+        gradient.colors = [UIColor.clear.cgColor, blackColor]
+        gradient.locations = [0.65, 1.0]
+        self.moviePosterImageView.layer.insertSublayer(gradient, at: 0)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
