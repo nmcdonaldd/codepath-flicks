@@ -42,7 +42,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     print(dataDictionary)
                     
-                    self.movies = dataDictionary["results"] as! [NSDictionary]
+                    self.movies = dataDictionary["results"] as? [NSDictionary]
                     self.moviesTableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
@@ -65,7 +65,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     print(dataDictionary)
                     
-                    self.movies = dataDictionary["results"] as! [NSDictionary]
+                    self.movies = dataDictionary["results"] as? [NSDictionary]
                     self.moviesTableView.reloadData()
                 }
             }
