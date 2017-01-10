@@ -14,6 +14,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 
     @IBOutlet weak var moviesTableView: UITableView!
     private var movies: [NSDictionary]?
+    private var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,31 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         self.loadMoviesData()
         
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.addTarget(self, action: #selector(self.refreshControlTriggered), for: .valueChanged)
+        self.moviesTableView.insertSubview(self.refreshControl, at: 0)
     }
+    
+    func refreshControlTriggered() {
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
+        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        
+        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            if let data = data {
+                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                    print(dataDictionary)
+                    
+                    self.movies = dataDictionary["results"] as! [NSDictionary]
+                    self.moviesTableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                }
+            }
+        }
+        task.resume()
+    }
+
     
     private func loadMoviesData() {
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
