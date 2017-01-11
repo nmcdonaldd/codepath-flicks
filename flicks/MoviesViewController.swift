@@ -179,7 +179,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 extension MoviesViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        print(searchController.searchBar.text!)
         if let searchText = searchController.searchBar.text {
             self.filteredMovies = searchText.isEmpty ? self.movies : self.movies!.filter({(dataDict: NSDictionary) -> Bool in
                 let returnVal: Bool = (dataDict[moviesTitlePropertyIdentifier] as! String).lowercased().range(of: searchText.lowercased()) != nil
