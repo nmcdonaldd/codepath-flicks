@@ -22,16 +22,12 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="46"/>
-                                <color key="separatorColor" white="0.0" alpha="0.53550406678082196" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="BJI-Hd-yRs">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
-                                </searchBar>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="228" id="9p5-1x-ge4" customClass="MoviesTableViewCell" customModule="flicks" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="375" height="228"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="228"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9p5-1x-ge4" id="zjl-Wn-R00">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="228"/>
@@ -70,8 +66,9 @@
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="0.5428082191780822" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="moviePosterImageView" destination="JHy-Ef-lY5" id="uEs-QZ-VRR"/>
                                             <outlet property="ratingLabel" destination="HDF-d3-QwI" id="dk3-Wo-TID"/>
@@ -86,7 +83,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="Now Playing" id="mmo-7t-rmI"/>
                     <connections>
-                        <outlet property="moviesSearchBar" destination="BJI-Hd-yRs" id="LIk-ed-E00"/>
                         <outlet property="moviesTableView" destination="Obf-dv-Cs5" id="5l7-r4-SID"/>
                     </connections>
                 </viewController>
