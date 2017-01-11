@@ -50,7 +50,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         definesPresentationContext = true
         self.moviesTableView.tableHeaderView = searchController.searchBar
         self.searchController = searchController
+        self.searchController.hidesNavigationBarDuringPresentation = true
         self.searchController.searchBar.delegate = self
+        self.searchController.searchBar.placeholder = moviesNowPlayingForSearchBar
         self.moviesTableView.contentOffset = CGPoint(x: 0, y: self.searchController.searchBar.frame.size.height)
     }
     
@@ -72,11 +74,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    print(dataDictionary)
-                    
                     self.movies = dataDictionary[moviesResultsPropertyIdentifier] as? [NSDictionary]
                     self.updateSearchResults(for: self.searchController)
-                    //self.searchBar(self.moviesSearchBar, textDidChange: self.moviesSearchBar.text!)
                     self.moviesTableView.reloadData()
                     self.refreshControl.endRefreshing()
                 }
@@ -95,8 +94,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    print(dataDictionary)
-                    
                     self.movies = dataDictionary[moviesResultsPropertyIdentifier] as? [NSDictionary]
                     self.updateSearchResults(for: self.searchController)
                     self.moviesTableView.reloadData()
@@ -153,26 +150,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         return cell!
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.filteredMovies = searchText.isEmpty ? self.movies : self.movies!.filter({(dataDict: NSDictionary) -> Bool in
-            let returnVal: Bool = (dataDict[moviesTitlePropertyIdentifier] as! String).lowercased().range(of: searchText.lowercased()) != nil
-            return returnVal
-        })
-        
-        let shouldShowCancelButton: Bool = searchText.isEmpty ? false : true
-        
-        if shouldShowCancelButton != self.moviesSearchBarPreviouslyFilled {
-            //self.moviesSearchBar.setShowsCancelButton(shouldShowCancelButton, animated: true)
-            print("animating!")
-            self.moviesSearchBarPreviouslyFilled = !self.moviesSearchBarPreviouslyFilled
-        }
-        
-        self.moviesTableView.reloadData()
-    }
-    
     
     // MARK: - UISearchBarDelegate methods
-    // TODO: - Keep search bar right below the navigationbar! Also make it behind the navigationBar when first opening!
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
@@ -184,11 +163,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(true, animated: true)
+        
+        // Following is a "hack" to get the refresh control disabled when searching, although it still works.
         self.moviesTableView.refreshControl = nil
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
+        
+        // Following is a "hack" to get the refresh control enabled when done searching.
         self.moviesTableView.refreshControl = self.refreshControl
     }
 }
@@ -200,7 +183,6 @@ extension MoviesViewController: UISearchResultsUpdating {
         if let searchText = searchController.searchBar.text {
             self.filteredMovies = searchText.isEmpty ? self.movies : self.movies!.filter({(dataDict: NSDictionary) -> Bool in
                 let returnVal: Bool = (dataDict[moviesTitlePropertyIdentifier] as! String).lowercased().range(of: searchText.lowercased()) != nil
-                print(returnVal)
                 return returnVal
             })
             

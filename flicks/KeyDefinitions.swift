@@ -22,3 +22,7 @@ let moviesResultsPropertyIdentifier = "results"
 // MARK: - Reusable IDs
 
 let moviesCellReusableIdentifier = "MovieCell"
+
+
+// MARK: - Presented strings
+let moviesNowPlayingForSearchBar = "Search for now playing movies"
