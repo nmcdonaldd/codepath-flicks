@@ -36,6 +36,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     private func setUpRefreshControl() {
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = UIColor.clear
+        self.refreshControl.tintColor = UIColor.lightGray
         self.refreshControl.addTarget(self, action: #selector(self.refreshControlTriggered), for: .valueChanged)
         self.moviesTableView.refreshControl = self.refreshControl
     }
