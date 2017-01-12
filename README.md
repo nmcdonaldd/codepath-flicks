@@ -17,7 +17,7 @@ The following **optional** features are implemented:
 
 - [ ] User sees an error message when there's a networking error. <-- Going to work on it.
 - [ ] Movies are displayed using a CollectionView instead of a TableView. <-- Going to work on it.
-- [ ] User can search for a movie. <-- Going to work on it.
+- [x] User can search for a movie. <-- Going to work on it.
 - [ ] All images fade in as they are loading. <-- Going to work on it.
 - [x] Customize the UI.
 
@@ -37,7 +37,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/CPsNS7h.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://imgur.com/bBJ5dUS.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
