@@ -2,7 +2,7 @@
 
 **Flicks** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **~4** hours spent in total
+Time spent: **~5.5** hours spent in total
 
 ## User Stories
 
@@ -37,7 +37,9 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://imgur.com/bBJ5dUS.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+http://imgur.com/5vRTXgN
+
+<img src='=http://imgur.com/5vRTXgN.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
