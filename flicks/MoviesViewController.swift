@@ -156,7 +156,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let rating = movie[moviesVoteAveragePropertyIdentifier] as! Float
         
         cell?.title.text = title
+        cell?.moviePosterImageView.alpha = 0.0
         cell?.moviePosterImageView.setImageWith(imageURL as! URL)
+        UIView.animate(withDuration: 0.3, animations: { Void in
+            cell?.moviePosterImageView.alpha = 1.0
+        })
         cell?.releaseDateLabel.text = releaseDate
         cell?.ratingLabel.text = String(rating)
         
@@ -177,7 +181,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(true, animated: true)
         
-        // Following is a "hack" to get the refresh control disabled when searching, although it still works.
+        // Following is a "hack" to get the refresh control disabled when searching, although it would still work if it wasn't disabled.
         self.moviesTableView.refreshControl = nil
     }
     
