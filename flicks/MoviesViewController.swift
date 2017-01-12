@@ -9,6 +9,7 @@
 import UIKit
 import AFNetworking
 import SVProgressHUD
+import SwiftDate
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
@@ -23,25 +24,31 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.moviesTableView.dataSource = self
-        self.moviesTableView.delegate = self
-        self.moviesTableView.backgroundView = UIView(frame: self.moviesTableView.frame)
-        self.moviesTableView.backgroundView?.backgroundColor = UIColor.clear
-        
         self.setUpSearchController()
-        
+        self.setUpMoviesTableView()
         self.loadMoviesData()
+        self.setUpRefreshControl()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(notification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDismissed(notification:)), name: .UIKeyboardWillHide, object: nil)
-        
+    }
+    
+    private func setUpRefreshControl() {
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = UIColor.clear
         self.refreshControl.addTarget(self, action: #selector(self.refreshControlTriggered), for: .valueChanged)
         self.moviesTableView.refreshControl = self.refreshControl
     }
     
-    func setUpSearchController() {
+    private func setUpMoviesTableView() {
+        self.moviesTableView.dataSource = self
+        self.moviesTableView.delegate = self
+        self.moviesTableView.backgroundView = UIView(frame: self.moviesTableView.frame)
+        self.moviesTableView.backgroundView?.backgroundColor = UIColor.clear
+        self.moviesTableView.contentOffset = CGPoint(x: 0, y: self.searchController.searchBar.frame.size.height)
+    }
+    
+    private func setUpSearchController() {
         let searchController: UISearchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -53,7 +60,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.searchController.hidesNavigationBarDuringPresentation = true
         self.searchController.searchBar.delegate = self
         self.searchController.searchBar.placeholder = moviesNowPlayingForSearchBar
-        self.moviesTableView.contentOffset = CGPoint(x: 0, y: self.searchController.searchBar.frame.size.height)
     }
     
     func keyboardDismissed(notification: Notification) {
@@ -83,7 +89,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
         task.resume()
     }
-
     
     private func loadMoviesData() {
         let url = URL(string: moviesDBNowPlayingEndpoint + moviesDBAPIKey)!
@@ -131,6 +136,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    private func parseDate(asString input: String) -> String {
+        let date: DateInRegion = try! DateInRegion(string: input, format: .custom("yyyy-MM-dd"))
+        let relevantTime = date.string(dateStyle: .medium, timeStyle: .none)
+        
+        return relevantTime
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: moviesCellReusableIdentifier) as? MoviesTableViewCell
@@ -139,7 +151,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let title = movie[moviesTitlePropertyIdentifier] as! String
         let posterPath = movie[moviesBackdropPathPropertyIdentifier] as! String
         let imageURL = NSURL(string: moviesDBBaseImagePath + posterPath)
-        let releaseDate = movie[moviesReleaseDatePropertyIdentifier] as! String
+        let releaseDate = self.parseDate(asString: movie[moviesReleaseDatePropertyIdentifier] as! String)
         let rating = movie[moviesVoteAveragePropertyIdentifier] as! Float
         
         cell?.title.text = title

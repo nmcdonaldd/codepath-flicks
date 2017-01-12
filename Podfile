@@ -8,4 +8,5 @@ target 'flicks' do
   # Pods for flicks
   pod 'AFNetworking'
   pod 'SVProgressHUD'
+  pod 'SwiftDate'
 end
