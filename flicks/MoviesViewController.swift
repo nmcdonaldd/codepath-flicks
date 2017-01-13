@@ -19,6 +19,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     private var refreshControl: UIRefreshControl!
     fileprivate var filteredMovies: [NSDictionary]?
     private var moviesSearchBarPreviouslyFilled: Bool = false
+    private var isSearching: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -156,11 +157,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let rating = movie[moviesVoteAveragePropertyIdentifier] as! Float
         
         cell?.title.text = title
-        cell?.moviePosterImageView.alpha = 0.0
-        cell?.moviePosterImageView.setImageWith(imageURL as! URL)
-        UIView.animate(withDuration: 0.3, animations: { Void in
-            cell?.moviePosterImageView.alpha = 1.0
-        })
+        if !isSearching {
+            cell?.moviePosterImageView.alpha = 0.0
+            cell?.moviePosterImageView.setImageWith(imageURL as! URL)
+            UIView.animate(withDuration: 0.3, animations: { Void in
+                cell?.moviePosterImageView.alpha = 1.0
+            })
+        } else {
+            cell?.moviePosterImageView.setImageWith(imageURL as! URL)
+        }
         cell?.releaseDateLabel.text = releaseDate
         cell?.ratingLabel.text = String(rating)
         
@@ -172,21 +177,23 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
+        self.isSearching = false
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
+        self.isSearching = false
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(true, animated: true)
+        self.isSearching = true
         
         // Following is a "hack" to get the refresh control disabled when searching, although it would still work if it wasn't disabled.
         self.moviesTableView.refreshControl = nil
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: true)
+        self.isSearching = false
         
         // Following is a "hack" to get the refresh control enabled when done searching.
         self.moviesTableView.refreshControl = self.refreshControl
