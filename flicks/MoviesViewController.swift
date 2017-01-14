@@ -59,7 +59,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         definesPresentationContext = true
         self.moviesTableView.tableHeaderView = searchController.searchBar
         self.searchController = searchController
-        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.hidesNavigationBarDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.searchBar.placeholder = moviesNowPlayingForSearchBar
     }
@@ -188,7 +188,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         self.isSearching = true
         
-        // Following is a "hack" to get the refresh control disabled when searching, although it would still work if it wasn't disabled.
+        // Following is a "hack" to get the refresh control disabled when searching, although it would still work if it wasn't disabled, it just looks visually better without the refresh control when searching.
         self.moviesTableView.refreshControl = nil
     }
     
