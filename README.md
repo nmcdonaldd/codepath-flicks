@@ -64,7 +64,7 @@ I would like a better understanding of mobile UI desiging and color choices.
 
 **Flicks** is a movies app displaying box office and top rental DVDs using [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **2** hours spent in total
+Time spent: **2.5** hours spent in total
 
 ## User Stories
 
@@ -98,7 +98,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Describe any challenges encountered while building the app. I imported my own images for the tab bar and many of them were too large extending off the tabBar. I eventually realized if I name my file names with "@2x.png" then iOS would scale the photos down. Other than that, not many challenges! I plan to keep working on the optional user stories and resubmit.
 
 ## License
 
