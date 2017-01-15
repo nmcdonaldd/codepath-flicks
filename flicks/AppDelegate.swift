@@ -16,6 +16,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let nowPlayingNavigationController: UINavigationController = storyboard.instantiateViewController(withIdentifier: "moviesNavigationController") as! UINavigationController
+        let nowPlayingViewController: MoviesViewController = nowPlayingNavigationController.topViewController as! MoviesViewController
+        nowPlayingViewController.endPoint = moviesNowPlayingEndpoint
+        nowPlayingNavigationController.tabBarItem.title = "Now Playing"
+        nowPlayingNavigationController.tabBarItem.image = UIImage(imageLiteralResourceName: "Ticket-50")
+        
+        let topRatedNavigationController: UINavigationController = storyboard.instantiateViewController(withIdentifier: "moviesNavigationController") as! UINavigationController
+        let topRatedViewController: MoviesViewController = topRatedNavigationController.topViewController as! MoviesViewController
+        topRatedViewController.endPoint = moviesTopRatedEndpoint
+        topRatedNavigationController.tabBarItem.title = "Top Rated"
+        topRatedNavigationController.tabBarItem.image = UIImage(imageLiteralResourceName: "Rating-50")
+        
+        let moviesTabBarController: UITabBarController = UITabBarController()
+        moviesTabBarController.tabBar.barStyle = .black
+        moviesTabBarController.tabBar.tintColor = UIColor.white
+        moviesTabBarController.viewControllers = [nowPlayingNavigationController, topRatedNavigationController]
+        
+        self.window?.rootViewController = moviesTabBarController
+        self.window?.makeKeyAndVisible()
+        
         return true
     }
 

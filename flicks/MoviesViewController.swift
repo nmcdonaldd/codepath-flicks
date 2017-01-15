@@ -14,6 +14,7 @@ import SwiftDate
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var moviesTableView: UITableView!
+    
     fileprivate var movies: [NSDictionary]?
     fileprivate var filteredMovies: [NSDictionary]?
     private var searchController: UISearchController!
@@ -21,6 +22,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     private var moviesSearchBarPreviouslyFilled: Bool = false
     private var isSearching: Bool = false
     private var shouldShowLoadingHUD: Bool = false
+    var endPoint: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,7 +83,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     @objc private func loadMoviesData() {
-        let url = URL(string: moviesDBNowPlayingEndpoint + moviesDBAPIKey)!
+        let url = URL(string: "https://api.themoviedb.org/3/movie/\(self.endPoint!)?api_key=\(moviesDBAPIKey)")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         
@@ -135,22 +137,23 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: moviesCellReusableIdentifier) as? MoviesTableViewCell
         
         let movie = self.filteredMovies![indexPath.row]
-        let title = movie[moviesTitlePropertyIdentifier] as! String
-        let posterPath = movie[moviesBackdropPathPropertyIdentifier] as! String
-        let imageURL = NSURL(string: moviesDBBaseImagePath + posterPath)
+        let title = movie[moviesTitlePropertyIdentifier] as? String
+        if let posterPath = movie[moviesBackdropPathPropertyIdentifier] as? String {
+            let imageURL = NSURL(string: moviesDBBaseImagePath + posterPath)
+            if !isSearching {
+                cell?.moviePosterImageView.alpha = 0.0
+                cell?.moviePosterImageView.setImageWith(imageURL as! URL)
+                UIView.animate(withDuration: 0.3, animations: { Void in
+                    cell?.moviePosterImageView.alpha = 1.0
+                })
+            } else {
+                cell?.moviePosterImageView.setImageWith(imageURL as! URL)
+            }
+        }
         let releaseDate = self.parseDate(asString: movie[moviesReleaseDatePropertyIdentifier] as! String)
         let rating = movie[moviesVoteAveragePropertyIdentifier] as! Float
         
         cell?.title.text = title
-        if !isSearching {
-            cell?.moviePosterImageView.alpha = 0.0
-            cell?.moviePosterImageView.setImageWith(imageURL as! URL)
-            UIView.animate(withDuration: 0.3, animations: { Void in
-                cell?.moviePosterImageView.alpha = 1.0
-            })
-        } else {
-            cell?.moviePosterImageView.setImageWith(imageURL as! URL)
-        }
         cell?.releaseDateLabel.text = releaseDate
         cell?.ratingLabel.text = String(rating)
         
@@ -182,6 +185,16 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         // Following is a "hack" to get the refresh control enabled when done searching.
         self.moviesTableView.refreshControl = self.refreshControl
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let cell: MoviesTableViewCell = sender as! MoviesTableViewCell   // Might need to change this to UITableViewCell?
+        let indexPath: IndexPath? = self.moviesTableView.indexPath(for: cell)
+        let movie: NSDictionary = self.filteredMovies![indexPath!.row]
+        
+        let destinationViewController: MovieDetailsViewController = segue.destination as! MovieDetailsViewController
+        destinationViewController.movie = movie
     }
 }
 
