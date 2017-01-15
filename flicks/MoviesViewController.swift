@@ -14,12 +14,13 @@ import SwiftDate
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var moviesTableView: UITableView!
-    private var searchController: UISearchController!
     fileprivate var movies: [NSDictionary]?
-    private var refreshControl: UIRefreshControl!
     fileprivate var filteredMovies: [NSDictionary]?
+    private var searchController: UISearchController!
+    private var refreshControl: UIRefreshControl!
     private var moviesSearchBarPreviouslyFilled: Bool = false
     private var isSearching: Bool = false
+    private var shouldShowLoadingHUD: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,18 +28,23 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Do any additional setup after loading the view.
         self.setUpSearchController()
         self.setUpMoviesTableView()
+        self.shouldShowLoadingHUD = true
         self.loadMoviesData()
+        self.shouldShowLoadingHUD = false
         self.setUpRefreshControl()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(notification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDismissed(notification:)), name: .UIKeyboardWillHide, object: nil)
     }
     
+    
+    // MARK: - Helper methods
+    
     private func setUpRefreshControl() {
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = UIColor.clear
         self.refreshControl.tintColor = UIColor.lightGray
-        self.refreshControl.addTarget(self, action: #selector(self.refreshControlTriggered), for: .valueChanged)
+        self.refreshControl.addTarget(self, action: #selector(self.loadMoviesData), for: .valueChanged)
         self.moviesTableView.refreshControl = self.refreshControl
     }
     
@@ -64,40 +70,24 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.searchController.searchBar.placeholder = moviesNowPlayingForSearchBar
     }
     
-    func keyboardDismissed(notification: Notification) {
+    @objc private func keyboardDismissed(notification: Notification) {
         self.moviesTableView.contentInset.bottom = 0
     }
     
-    func keyboardShown(notification: Notification) {
+    @objc private func keyboardShown(notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             self.moviesTableView.contentInset.bottom = keyboardSize.height
         }
     }
     
-    func refreshControlTriggered() {
+    @objc private func loadMoviesData() {
         let url = URL(string: moviesDBNowPlayingEndpoint + moviesDBAPIKey)!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         
-        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
-            if let data = data {
-                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    self.movies = dataDictionary[moviesResultsPropertyIdentifier] as? [NSDictionary]
-                    self.updateSearchResults(for: self.searchController)
-                    self.moviesTableView.reloadData()
-                    self.refreshControl.endRefreshing()
-                }
-            }
+        if (self.shouldShowLoadingHUD) {
+            self.showHUD()
         }
-        task.resume()
-    }
-    
-    private func loadMoviesData() {
-        let url = URL(string: moviesDBNowPlayingEndpoint + moviesDBAPIKey)!
-        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
-        
-        self.showHUD()
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
@@ -121,10 +111,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func hideHUD() {
         SVProgressHUD.dismiss()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    private func parseDate(asString input: String) -> String {
+        let date: DateInRegion = try! DateInRegion(string: input, format: .custom("yyyy-MM-dd"))
+        let relevantTime = date.string(dateStyle: .medium, timeStyle: .none)
+        
+        return relevantTime
     }
     
     
@@ -136,13 +128,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         } else {
             return 0
         }
-    }
-    
-    private func parseDate(asString input: String) -> String {
-        let date: DateInRegion = try! DateInRegion(string: input, format: .custom("yyyy-MM-dd"))
-        let relevantTime = date.string(dateStyle: .medium, timeStyle: .none)
-        
-        return relevantTime
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
