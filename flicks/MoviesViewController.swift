@@ -73,7 +73,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     @objc private func keyboardDismissed(notification: Notification) {
-        self.moviesTableView.contentInset.bottom = 0
+        self.moviesTableView.contentInset.bottom = 0+(self.tabBarController?.tabBar.frame.height)!
     }
     
     @objc private func keyboardShown(notification: Notification) {
@@ -133,6 +133,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("\(#function)")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: moviesCellReusableIdentifier) as? MoviesTableViewCell
         
