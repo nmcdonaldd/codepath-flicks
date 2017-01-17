@@ -28,15 +28,17 @@ class MovieDetailsViewController: UIViewController {
     
         
         // Do any additional setup after loading the view.
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
         
         let gradient = CAGradientLayer()
         gradient.frame = self.movieInfoContentView.bounds
-        //let blackColor: CGColor = UIColor(colorLiteralRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.20).cgColor
         gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
         gradient.locations = [0.0, 1.0]
         self.movieInfoContentView.layer.insertSublayer(gradient, at: 0)
         
-        if let posterPath = movie[moviesBackdropPathPropertyIdentifier] as? String {
+        if let posterPath = movie[moviesPosterPathPropertyIdentifier] as? String {
             let imageURL = NSURL(string: moviesDBBaseImagePath + posterPath)
             self.movieBackdropImageView.alpha = 0.0
             self.movieBackdropImageView.setImageWith(imageURL as! URL)
@@ -50,6 +52,7 @@ class MovieDetailsViewController: UIViewController {
         self.movieOverviewLabel.text = movie[moviesOverviewPropertyIdentifier] as? String
         self.movieOverviewLabel.sizeToFit()
         self.movieNumOfVotesLabel.text = "\(movie["vote_count"] as! Int) votes"
+        self.moviePopularityLabel.text = String(movie["popularity"] as! Float)
         
         let releaseDate = self.parseDate(asString: movie[moviesReleaseDatePropertyIdentifier] as! String)
         self.movieReleaseDateLabel.text = releaseDate

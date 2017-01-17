@@ -11,7 +11,7 @@ import AFNetworking
 import SVProgressHUD
 import SwiftDate
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UINavigationBarDelegate {
 
     @IBOutlet weak var moviesTableView: UITableView!
     
@@ -196,6 +196,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let destinationViewController: MovieDetailsViewController = segue.destination as! MovieDetailsViewController
         destinationViewController.movie = movie
+    }
+    
+    override func unwind(for unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
     }
 }
 
