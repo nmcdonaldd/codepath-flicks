@@ -18,12 +18,12 @@ The following **optional** features are implemented:
 - [ ] User sees an error message when there's a networking error. <-- Going to work on it.
 - [ ] Movies are displayed using a CollectionView instead of a TableView. <-- Going to work on it.
 - [x] User can search for a movie. <-- Going to work on it.
-- [ ] All images fade in as they are loading. <-- Going to work on it.
+- [X] All images fade in as they are loading.
 - [x] Customize the UI.
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [X] List anything else that you can get done to improve the app functionality!
 - [x] Improved colors (in my opinion).
 - [x] Wrapped the tableView in a navigationViewController for easier navigation for user.
 - [ ] Switch between collectionView and tableView.
@@ -64,20 +64,20 @@ I would like a better understanding of mobile UI desiging and color choices.
 
 **Flicks** is a movies app displaying box office and top rental DVDs using [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **2** hours spent in total
+Time spent: **2.5** hours spent in total
 
 ## User Stories
 
 The following **required** functionality is completed:
 
-- [ ] User can view movie details by tapping on a cell.
-- [ ] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
-- [ ] Customize the selection effect of the cell.
+- [X] User can view movie details by tapping on a cell.
+- [X] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
+- [X] Customize the selection effect of the cell.
 
 The following **optional** features are implemented:
 
-- [ ] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
-- [ ] Customize the navigation bar.
+- [ ] For the large poster, load the low resolution image first and then switch to the high resolution image when complete. <-- Going to work on this.
+- [X] Customize the navigation bar.
 
 The following **additional** features are implemented:
 
@@ -85,24 +85,24 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. 
-2. 
+1. Why did we initialize the tabBarController in the AppDelegate instead of embedding the NavigationController in a TabBarController in the Storyboard? I believe it's because we wanted to use the same view controller for each tab and it was just more convenient to do it this way in the AppDelegate.
+2. How to do different animations when tabbing between the tabBarControllers.
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/VRDOXJN.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Describe any challenges encountered while building the app. I imported my own images for the tab bar and many of them were too large extending off the tabBar. I eventually realized if I name my file names with "@2x.png" then iOS would scale the photos down. Other than that, not many challenges! I plan to keep working on the optional user stories and resubmit.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2017] [Nicholas McDonald]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
