@@ -27,6 +27,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.titleString = (self.endPoint == "top_rated") ? "Top Rated" : "Now Playing"
+        self.title = self.titleString
 
         // Do any additional setup after loading the view.
         self.setUpSearchController()
@@ -38,9 +41,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(notification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDismissed(notification:)), name: .UIKeyboardWillHide, object: nil)
-        
-        self.titleString = (self.endPoint == "top_rated") ? "Top Rated" : "Now Playing"
-        self.title = self.titleString
     }
     
     
@@ -73,7 +73,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.searchController = searchController
         self.searchController.hidesNavigationBarDuringPresentation = false
         self.searchController.searchBar.delegate = self
-        self.searchController.searchBar.placeholder = moviesNowPlayingForSearchBar
+        self.searchController.searchBar.placeholder = "Search for \(self.titleString.lowercased()) movies"
     }
     
     @objc private func keyboardDismissed(notification: Notification) {
