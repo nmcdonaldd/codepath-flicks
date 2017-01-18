@@ -11,7 +11,7 @@ import AFNetworking
 import SVProgressHUD
 import SwiftDate
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UINavigationBarDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var moviesTableView: UITableView!
     
@@ -23,6 +23,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     private var isSearching: Bool = false
     private var shouldShowLoadingHUD: Bool = false
     var endPoint: String!
+    var titleString: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(notification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDismissed(notification:)), name: .UIKeyboardWillHide, object: nil)
+        
+        self.titleString = (self.endPoint == "top_rated") ? "Top Rated" : "Now Playing"
+        self.title = self.titleString
     }
     
     
@@ -133,7 +137,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("\(#function)")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: moviesCellReusableIdentifier) as? MoviesTableViewCell
         

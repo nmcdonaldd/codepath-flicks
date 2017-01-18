@@ -22,21 +22,25 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var movieNumOfVotesLabel: UILabel!
     @IBOutlet weak var movieBackdropImageView: UIImageView!
     @IBOutlet weak var movieInfoContentView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var descriptionContentView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        
         // Do any additional setup after loading the view.
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
         
-        let gradient = CAGradientLayer()
+        var gradient = CAGradientLayer()
         gradient.frame = self.movieInfoContentView.bounds
         gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
         gradient.locations = [0.0, 1.0]
         self.movieInfoContentView.layer.insertSublayer(gradient, at: 0)
+        
+        gradient = CAGradientLayer()
+        gradient.frame = self.movieBackdropImageView.bounds
+        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        gradient.locations = [0.85, 1.0]
+        self.movieBackdropImageView.layer.insertSublayer(gradient, at: 0)
         
         if let posterPath = movie[moviesPosterPathPropertyIdentifier] as? String {
             let imageURL = NSURL(string: moviesDBBaseImagePath + posterPath)
@@ -51,12 +55,13 @@ class MovieDetailsViewController: UIViewController {
         self.movieRatingLabel.text = String(movie[moviesVoteAveragePropertyIdentifier] as! Float)
         self.movieOverviewLabel.text = movie[moviesOverviewPropertyIdentifier] as? String
         self.movieOverviewLabel.sizeToFit()
-        self.movieNumOfVotesLabel.text = "\(movie["vote_count"] as! Int) votes"
-        self.moviePopularityLabel.text = String(movie["popularity"] as! Float)
+        self.movieNumOfVotesLabel.text = "\(movie[moviesVoteCountPropertyIdentifier] as! Int) votes"
+        self.moviePopularityLabel.text = String(movie[moviesPopularityPropertyIdentifier] as! Float)
         
         let releaseDate = self.parseDate(asString: movie[moviesReleaseDatePropertyIdentifier] as! String)
         self.movieReleaseDateLabel.text = releaseDate
         
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.descriptionContentView.frame.maxY)
     }
 
     override func didReceiveMemoryWarning() {

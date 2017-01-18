@@ -16,6 +16,7 @@
 		D52A04F71E24775D002B7970 /* MoviesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52A04F61E24775D002B7970 /* MoviesTableViewCell.swift */; };
 		D5A647C01E2B0F2F00564813 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A647BF1E2B0F2F00564813 /* MovieDetailsViewController.swift */; };
 		D5A647C21E2B27A800564813 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5A647C11E2B27A800564813 /* images.xcassets */; };
+		D5FBAFD31E2F164600A615FC /* MoviesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FBAFD21E2F164600A615FC /* MoviesNavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		D5614407259EC3E5435530D5 /* Pods-flicks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flicks.debug.xcconfig"; path = "Pods/Target Support Files/Pods-flicks/Pods-flicks.debug.xcconfig"; sourceTree = "<group>"; };
 		D5A647BF1E2B0F2F00564813 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		D5A647C11E2B27A800564813 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = images.xcassets; path = ../images.xcassets; sourceTree = "<group>"; };
+		D5FBAFD21E2F164600A615FC /* MoviesNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesNavigationController.swift; sourceTree = "<group>"; };
 		DF79E8F135D83288A692D361 /* Pods_flicks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_flicks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -107,6 +109,7 @@
 		D52A04F81E247768002B7970 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				D5FBAFD21E2F164600A615FC /* MoviesNavigationController.swift */,
 				D52A04F31E247048002B7970 /* MoviesViewController.swift */,
 				D5A647BF1E2B0F2F00564813 /* MovieDetailsViewController.swift */,
 			);
@@ -239,6 +242,7 @@
 			files = (
 				D5A647C01E2B0F2F00564813 /* MovieDetailsViewController.swift in Sources */,
 				D529A6B81E258353007312DE /* KeyDefinitions.swift in Sources */,
+				D5FBAFD31E2F164600A615FC /* MoviesNavigationController.swift in Sources */,
 				D52A04F71E24775D002B7970 /* MoviesTableViewCell.swift in Sources */,
 				D52A04E21E247001002B7970 /* AppDelegate.swift in Sources */,
 				D52A04F41E247048002B7970 /* MoviesViewController.swift in Sources */,
