@@ -23,6 +23,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     private var isSearching: Bool = false
     private var shouldShowLoadingHUD: Bool = false
     var endPoint: String!
+    var titleString: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(notification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDismissed(notification:)), name: .UIKeyboardWillHide, object: nil)
+        
+        self.titleString = (self.endPoint == "top_rated") ? "Top Rated" : "Now Playing"
+        self.title = self.titleString
     }
     
     
@@ -133,7 +137,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("\(#function)")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: moviesCellReusableIdentifier) as? MoviesTableViewCell
         
@@ -196,6 +199,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let destinationViewController: MovieDetailsViewController = segue.destination as! MovieDetailsViewController
         destinationViewController.movie = movie
+    }
+    
+    override func unwind(for unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
     }
 }
 

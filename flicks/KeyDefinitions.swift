@@ -23,6 +23,9 @@ let moviesOverviewPropertyIdentifier = "overview"
 let moviesNavigationControllerIdentififer = "moviesNavigationController"
 let moviesNowPlayingEndpoint = "now_playing"
 let moviesTopRatedEndpoint = "top_rated"
+let moviesVoteCountPropertyIdentifier = "vote_count"
+let moviesPopularityPropertyIdentifier = "popularity"
+
 
 
 // MARK: - Reusable IDs
